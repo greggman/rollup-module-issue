@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import ReactDOM from 'react-dom/client';
 import * as FlexLayout from 'flexlayout-react';
+import {TabNode} from "flexlayout-react/src/model/TabNode";
 //import 'light.css';
 
 const json = {
@@ -25,17 +26,31 @@ const json = {
     },
 };
 
-class App extends React.Component {
-    constructor(props) {
+interface IProps {
+    json?:  FlexLayout.IJsonModel
+}
+
+interface IState {
+    model:  FlexLayout.Model
+}
+
+class App extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
         super(props);
-        this.state = { model: FlexLayout.Model.fromJson(json) };
+        this.state = { model: FlexLayout.Model.fromJson(props.json || {
+            layout: {
+                children: [],
+                type: "row"
+            }
+        }) };
     }
 
-    factory = node => {
+    factory = (node: FlexLayout.TabNode) => {
         const component = node.getComponent();
         if (component === 'panel') {
             return <div className="tab_content">{node.getName()}</div>;
         }
+        return null;
     };
 
     render() {
