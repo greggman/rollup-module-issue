@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import * as FlexLayout from 'flexlayout-react';
 //import 'light.css';
 
-const json = {
+const json: FlexLayout.IJsonModel = {
     global: {},
     layout: {
         type: 'row',
@@ -25,13 +25,13 @@ const json = {
     },
 };
 
-class App extends React.Component {
-    constructor(props) {
+class App extends React.Component<any, {model:FlexLayout.Model}> {
+    constructor(props: any) {
         super(props);
         this.state = { model: FlexLayout.Model.fromJson(json) };
     }
 
-    factory = node => {
+    factory = (node: FlexLayout.TabNode) => {
         const component = node.getComponent();
         if (component === 'panel') {
             return <div className="tab_content">{node.getName()}</div>;
